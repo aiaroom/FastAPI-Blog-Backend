@@ -62,7 +62,7 @@
 ├── tests/              # Автоматические тесты (Pytest)
 ├── docker-compose.yml  # Описание сервисов Docker
 └── Dockerfile          # Инструкции по сборке образа
-```
+
 
 ## 🚀 Быстрый запуск
 
@@ -70,7 +70,7 @@
 
 Клонируйте репозиторий и создайте файл `.env` в корне проекта на основе примера:
 
-```ini
+```
 DEBUG=True
 DATABASE_URL="sqlite+aiosqlite:///./data/blog.db"
 SECRET_KEY=your_secret_key_here
@@ -86,7 +86,7 @@ SECRET_KEY=your_secret_key_here
 
 Выполните команду:
 
-```bash
+```
 docker-compose up --build
 ```
 
@@ -132,4 +132,4 @@ docker-compose exec app python -m pytest -v
 - `POST /api/v1/admin/posts` — Создание поста (Bleach защищен)
 - `POST /api/v1/admin/categories` — Создание категории
 - `PATCH /api/v1/admin/users/{id}/role` — Управление ролями (USER/ADMIN)
-```
+
