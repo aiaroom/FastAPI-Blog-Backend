@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # Основной сервис приложения
+  app:
+    build: .
+    container_name: fastapi_blog_app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=${DEBUG:-true}
+      - DATABASE_URL=${DATABASE_URL:-sqlite+aiosqlite:///./data/blog.db}
+      - SECRET_KEY=${SECRET_KEY:-change-this-in-production}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES:-30}
+      - REFRESH_TOKEN_EXPIRE_DAYS=${REFRESH_TOKEN_EXPIRE_DAYS:-7}
+    volumes:
+      - .:/app
+      - app_data:/app/data
+    depends_on:
+      - db
+    command: sh -c "alembic upgrade head && python -m app.initial_data && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+
+  # База данных PostgreSQL (опционально)
+  db:
+    image: postgres:15-alpine
+    container_name: fastapi_blog_db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-blogdb}
+      - POSTGRES_USER=${POSTGRES_USER:-bloguser}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-blogpassword}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  app_data:
+  postgres_data:
