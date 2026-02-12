@@ -27,7 +27,7 @@ async def test_admin_permissions_and_xss(client: AsyncClient, db_session, admin_
         json={"name": "Hacking", "slug": "hack"},
         headers=user_token_headers
     )
-    assert res.status_code == 403  # Forbidden
+    assert res.status_code == 403  
 
     # 3. Тест: Админ создает категорию (должен быть успех)
     res = await client.post(
